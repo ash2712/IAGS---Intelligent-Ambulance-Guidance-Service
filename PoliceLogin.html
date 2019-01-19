@@ -1,0 +1,46 @@
+<html>
+<header><font size = "7" face = "verdana" color = "red"><center>IAGS</center></font>
+  <br/>
+  <font size = "6" face = "verdana" color = "red"><center>Intelligent Ambulance Guiding System</center></font>
+</font>
+
+<br/>
+
+<center><a href ="file:///C:/Users/siddh/Desktop/CODEFEST/untitled%20folder/IAGS_home.html"><font size ="4"> Home</a> &nbsp;| &nbsp;<a href ="https://www.uber.com/in/en/"><font size ="4"> Find My Location</a> &nbsp;| &nbsp;<a href =""> Contact Us</a> &nbsp;| &nbsp;
+  <a href="">Maps</a>&nbsp;|&nbsp;<a href ="file:///Users/ishanjha/Programs_1/About_us.html"><font size ="4"> About Us</a> &nbsp;| &nbsp;
+
+</font>
+
+
+
+<hr>
+FIRST NAME:<br>
+<input type="text" id="p2firstname" >
+<br><br>
+POLICE STATION:<br>
+<input type="text" id="pstation">
+<br><br>
+PASSWORD<br>
+<input type="password" id="p2passsworrd" name="password">
+<br><br>
+ <input type="submit" value="FIND MY LOCATION" length="100px" width="20px" onclick="getLocation()"><br><br>
+ <a href="https://www.uber.com/in/en/"><input type="submit" value="LOGIN"></a>
+ <p id="demo"></p>
+ <script>
+var x = document.getElementById("demo");
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude + 
+  "<br>Longitude: " + position.coords.longitude; 
+}
+</script>
+</body>
+</html>
+
