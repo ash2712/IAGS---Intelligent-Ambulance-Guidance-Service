@@ -27,16 +27,34 @@ REGISTERED POLICE STATION:<br>
 <br>
 PASSWORD:<br>
 <input type="password" id="ppassword" name="ppassword"><br><br>
-<input type="submit" value="Sign Up" onlick="psave()">
+<button onclick ="writeData()">Submit</button>
+
+<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
 <script>
-function psave()
-{
-var pfname=document.getElementById("pfirstname").value;
-var plname=document.getElementById("plastname").value;
-var pcontact=document.getElementById("pcnumber").value;
-var station=document.getElementById("station").value;
-var ppassword=document.getElementById("ppassword").value;}
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyA_UMILNAjjgMG5RP88mMoEBe0IovKzaZo",
+    authDomain: "tuts-932db.firebaseapp.com",
+    databaseURL: "https://tuts-932db.firebaseio.com",
+    projectId: "tuts-932db",
+    storageBucket: "tuts-932db.appspot.com",
+    messagingSenderId: "305885020947"
+  };
+  firebase.initializeApp(config);
+
+
+  function writeData(){
+  
+  var firebaseRef = firebase.database().ref("Police");
+	firebaseRef.push().set({
+		firstName: document.getElementById("pfirstname").value,
+		lastName: plname=document.getElementById("plastname").value,
+		contactNo: document.getElementById("pcnumber").value,
+		password:document.getElementById("ppassword").value
+	});
+
+  }
+
 </script>
 </body>
 </html>
-
