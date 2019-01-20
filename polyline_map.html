@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polylines</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyA_UMILNAjjgMG5RP88mMoEBe0IovKzaZo",
+		authDomain: "tuts-932db.firebaseapp.com",
+		databaseURL: "https://tuts-932db.firebaseio.com",
+		projectId: "tuts-932db",
+		storageBucket: "tuts-932db.appspot.com",
+		messagingSenderId: "305885020947"
+	  };
+	  firebase.initializeApp(config);
+
+      // This example creates a 2-pixel-wide red polyline showing the path of
+      // the first trans-Pacific flight between Oakland, CA, and Brisbane,
+      // Australia which was made by Charles Kingsford Smith.
+	  
+		
+	
+      function initMap() {
+		var destination = {lat: 12.9199, lng: 77.6652};
+		var source = {lat: 12.8876, lng: 77.7520};
+	  
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: destination
+        });
+
+        var flightPlanCoordinates = [
+          {lat: 12.920412, lng: 77.665531},
+		  {lat: 12.919854, lng: 77.666734},
+          {lat: 12.918833, lng: 77.668715},
+		  {lat: 12.918212, lng: 77.670760},
+		  {lat: 12.916868, lng: 77.673330},
+		  {lat: 12.916162, lng: 77.673630},
+		  {lat: 12.915498, lng: 77.674193},
+		  {lat: 12.914442, lng: 77.675824},
+		  {lat: 12.913360, lng: 77.679059},
+		  {lat: 12.911891, lng: 77.681848},
+		  {lat: 12.911342, lng: 77.682953},
+		  {lat: 12.908835, lng: 77.689400},
+		  {lat: 12.907193, lng: 77.695533},
+		  {lat: 12.906295, lng: 77.698592},
+		  {lat: 12.900786, lng: 77.709345},
+		  {lat: 12.900488, lng: 77.710515},
+		  {lat: 12.899604, lng: 77.711856},
+		  {lat: 12.899384, lng: 77.712232},
+		  {lat: 12.897418, lng: 77.718320},
+		  {lat: 12.893334, lng: 77.727037},
+		  {lat: 12.889454, lng: 77.732080},
+		  {lat: 12.887927, lng: 77.734907},
+		  {lat: 12.887752, lng: 77.735535},
+		  {lat: 12.887446, lng: 77.738091},
+		  {lat: 12.887069, lng: 77.741226},
+		  {lat: 12.885129, lng: 77.746649},
+		  {lat: 12.885003, lng: 77.746853},
+		  {lat: 12.883293, lng: 77.752330},
+		  {lat: 12.883309, lng: 77.752348},
+		  {lat: 12.884629, lng: 77.751841},
+		  {lat: 12.888313, lng: 77.750250},
+		  {lat: 12.889610, lng: 77.749971}
+
+        ];
+		
+		 var marker_destination = new google.maps.Marker({
+          position: destination,
+          map: map,
+          title: 'Columbia Asia'
+        });
+		
+		var marker_source = new google.maps.Marker({
+          position: source,
+          map: map,
+          title: 'Oakridge International School'
+        });
+		
+		var text = '{ "police" : [' +
+		'{ "firstName":"John" , "lastName":"Doe" , "lat":12.9192, "lng":77.6678, "contactno":1010101010},'	 +
+		'{ "firstName":"Anna" , "lastName":"Smith", "lat":12.913934, "lng":77.677574, "contactno":2020202020},' +
+		'{ "firstName":"Peter" , "lastName":"Jones" , "lat":12.9009, "lng": 77.7072, "contactno":3030303030} ]}';
+	
+		var obj = JSON.parse(text);
+		
+		var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png';
+		
+		var rootRef = firebase.database().ref("Police");
+		rootRef.on("child_added", snap=>{
+			var name = snap.child("firstName").val();
+			var latitude = snap.child("lat").val();
+			var longitude = snap.child("lng").val();
+			var contactNo = snap.child("contactNo").val();
+			var marker_police = new google.maps.Marker({
+				map: map,
+				position: {lat:latitude , lng: longitude},
+				icon: iconBase
+            });
+			
+			var infowindow = new google.maps.InfoWindow({
+				content:name + ": " +  contactNo
+				
+			});
+			
+			google.maps.event.addListener(marker_police, 'click', function() {
+		infowindow.open(map,marker_police);
+});
+			
+		})
+		/*for(var i = 0; i < 3; i++){
+		
+			var latitude = obj.police[i].lat;
+			var longitude = obj.police[i].lng;
+			var marker_police = new google.maps.Marker({
+				map: map,
+				position: {lat:latitude , lng: longitude},
+				icon: iconBase
+            });
+			
+			var infowindow = new google.maps.InfoWindow({
+				content:obj.police[i].firstName + " " + obj.police[i].lastName
+			});
+			
+			google.maps.event.addListener(marker_police, 'click', function() {
+			infowindow.open(map,marker_police);
+		});
+		
+		}*/
+       
+		
+        var flightPath = new google.maps.Polyline({
+          path: flightPlanCoordinates,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        flightPath.setMap(map);
+      }	
+	  
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBglIlwcm10TKqZO8B6GMYNtUXoiOftC3c&callback=initMap">
+    </script>
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+  </body>
+</html>
