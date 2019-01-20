@@ -118,9 +118,9 @@ min-width: 1000px;
 <div class="dropdown">
   <button class="dropbtn">Police Officer details</button>
   <div class="dropdown-content"><center>
-  Name:<br>
-  Contact:<br>
-  Location:<br>
+  Name:<p id = "pname"></p>
+  Contact:<p id = "pContact">
+  Location:<p id="pLocation">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 .dropbtn {
@@ -215,12 +215,41 @@ min-width: 1000px;
   <div class="dropdown-content"><center>
   Name : Veer Sooryavanshi<br>
   Contact : 9880111032<br>
-  Location : 
   </div></div></center>
   <br><br><br><br>
   <a href="file:///C:/Users/siddh/Desktop/CODEFEST/ambulanceroutes.html"><button>ROUTE OF AMBULANCE</button><br><br>
     <a href="file:///C:/Users/siddh/Desktop/CODEFEST/polylines.html"><button>LOCATION OF POLICE OFFICERS</button>
-
+	
+	<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+	<script>
+	
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyA_UMILNAjjgMG5RP88mMoEBe0IovKzaZo",
+		authDomain: "tuts-932db.firebaseapp.com",
+		databaseURL: "https://tuts-932db.firebaseio.com",
+		projectId: "tuts-932db",
+		storageBucket: "tuts-932db.appspot.com",
+		messagingSenderId: "305885020947"
+	  };
+	  firebase.initializeApp(config);
+	  
+	  var tx_name = document.getElementById("pname");
+		var tx_contact = document.getElementById("pContact");
+		var tx_location = document.getElementById("pLocation");
+	  
+	  var rootRef = firebase.database().ref("Police");
+		rootRef.on("child_added", snap=>{
+			var name = snap.child("firstName").val();
+			var latitude = snap.child("lat").val();
+			var longitude = snap.child("lng").val();
+			var contactNo = snap.child("contactNo").val();
+			tx_name.innerHTML = name;
+			tx_contact.innerHTML = contactNo;
+			//x_location = "Latitude = " + latitude + ", Longitude = " + longitude;
+			
+		})
+	  
+	  </script>
   </body>
   </html>
- 
