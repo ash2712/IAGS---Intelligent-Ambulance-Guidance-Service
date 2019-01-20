@@ -1,0 +1,102 @@
+<html>
+<header><font size = "7" face = "verdana" color = "red"><center>IAGS</center></font>
+  <br/>
+  <font size = "6" face = "verdana" color = "red"><center>Intelligent Ambulance Guiding System</center></font>
+</font>
+
+<br/>
+
+<center><a href ="file:///Users/ishanjha/Desktop/Oakridge%20Codefest/IAGS_home.html"><font size ="4"> Home</a> &nbsp;| &nbsp;<a href ="file:///Users/ishanjha/Desktop/Oakridge%20Codefest/Find_My_Location.html"><font size ="4"> Find My Location</a> &nbsp;| &nbsp;
+  <a href ="file:///Users/ishanjha/Desktop/Oakridge%20Codefest/Contact_Us.html"> Contact Us</a> &nbsp;| &nbsp;
+  <a href ="file:///Users/ishanjha/Desktop/Oakridge%20Codefest/About_us.html"><font size ="4"> About Us</a> &nbsp;| &nbsp;
+
+</font>
+
+
+
+<hr>
+FIRST NAME:<br>
+<input type="text" id="pfirstname" name="firstname">
+<br><br>
+LAST NAME:<br>
+<input type="text" id="plastname" name="lastname">
+<br><br>
+CONTACT:<br>
+<input type="text" id="pcnumber" name="contact"><br><br>
+REGISTERED POLICE STATION:<br>
+<input type="text" id="station" name="station"><br>
+<br>
+PASSWORD:<br>
+<input type="password" id="ppassword" name="ppassword"><br><br>
+
+Please press the "Find my location" button and enter the latitude and longitude :
+
+<br>
+
+
+LATITUDE:<br>
+<input type="text" id="plat" name="lat">
+<br><br>
+LONGITUDE:<br>
+<input type="text" id="plong" name="long">
+<br><br>
+
+
+<button onclick ="writeData()">Submit</button>
+
+
+
+<input type="submit" value="FIND MY LOCATION" length="100px" width="20px" onclick="getLocation()"><br><br>
+
+<p id="demo"></p>
+
+
+
+
+
+
+
+
+<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyA_UMILNAjjgMG5RP88mMoEBe0IovKzaZo",
+    authDomain: "tuts-932db.firebaseapp.com",
+    databaseURL: "https://tuts-932db.firebaseio.com",
+    projectId: "tuts-932db",
+    storageBucket: "tuts-932db.appspot.com",
+    messagingSenderId: "305885020947"
+  };
+  firebase.initializeApp(config);
+
+  var x = document.getElementById("demo");
+  var lat= document.getElementById("plat");
+  var lng = document.getElementById("plong");
+  function getLocation() {
+  if (navigator.geolocation) {
+   navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+   x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+  }
+  function showPosition(position) {
+  lat.value = position.coords.latitude;
+  lng.value =  position.coords.longitude;
+  }
+
+  function writeData(){
+
+  var firebaseRef = firebase.database().ref("Police");
+	firebaseRef.push().set({
+		firstName: document.getElementById("pfirstname").value,
+		lastName: plname=document.getElementById("plastname").value,
+		contactNo: document.getElementById("pcnumber").value,
+		password:document.getElementById("ppassword").value,
+    lat: document.getElementById("plat").value,
+    lng: document.getElementById("plong").value
+  });
+  }
+</script>
+</body>
+</html>
